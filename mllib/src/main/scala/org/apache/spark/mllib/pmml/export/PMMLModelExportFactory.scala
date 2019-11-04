@@ -17,7 +17,7 @@
 
 package org.apache.spark.mllib.pmml.export
 
-import org.dmg.pmml.RegressionNormalizationMethodType
+//import org.dmg.pmml.RegressionNormalizationMethodType
 
 import org.apache.spark.mllib.classification.LogisticRegressionModel
 import org.apache.spark.mllib.classification.SVMModel
@@ -42,19 +42,19 @@ private[mllib] object PMMLModelExportFactory {
         new GeneralizedLinearPMMLModelExport(ridge, "ridge regression")
       case lasso: LassoModel =>
         new GeneralizedLinearPMMLModelExport(lasso, "lasso regression")
-      case svm: SVMModel =>
-        new BinaryClassificationPMMLModelExport(
-          svm, "linear SVM", RegressionNormalizationMethodType.NONE,
-          svm.getThreshold.getOrElse(0.0))
-      case logistic: LogisticRegressionModel =>
-        if (logistic.numClasses == 2) {
-          new BinaryClassificationPMMLModelExport(
-            logistic, "logistic regression", RegressionNormalizationMethodType.LOGIT,
-            logistic.getThreshold.getOrElse(0.5))
-        } else {
-          throw new IllegalArgumentException(
-            "PMML Export not supported for Multinomial Logistic Regression")
-        }
+      //      case svm: SVMModel =>
+      //        new BinaryClassificationPMMLModelExport(
+      //          svm, "linear SVM", RegressionNormalizationMethodType.NONE,
+      //          svm.getThreshold.getOrElse(0.0))
+      //      case logistic: LogisticRegressionModel =>
+      //        if (logistic.numClasses == 2) {
+      //          new BinaryClassificationPMMLModelExport(
+      //            logistic, "logistic regression", RegressionNormalizationMethodType.LOGIT,
+      //            logistic.getThreshold.getOrElse(0.5))
+      //        } else {
+      //          throw new IllegalArgumentException(
+      //            "PMML Export not supported for Multinomial Logistic Regression")
+      //        }
       case _ =>
         throw new IllegalArgumentException(
           "PMML Export not supported for model: " + model.getClass.getName)

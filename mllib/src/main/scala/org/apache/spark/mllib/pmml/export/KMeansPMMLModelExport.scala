@@ -35,49 +35,49 @@ private[mllib] class KMeansPMMLModelExport(model : KMeansModel) extends PMMLMode
    */
   private def populateKMeansPMML(model : KMeansModel): Unit = {
     pmml.getHeader.setDescription("k-means clustering")
-
-    if (model.clusterCenters.length > 0) {
-      val clusterCenter = model.clusterCenters(0)
-      val fields = new SArray[FieldName](clusterCenter.size)
-      val dataDictionary = new DataDictionary
-      val miningSchema = new MiningSchema
-      val comparisonMeasure = new ComparisonMeasure()
-        .withKind(ComparisonMeasure.Kind.DISTANCE)
-        .withMeasure(new SquaredEuclidean())
-      val clusteringModel = new ClusteringModel()
-        .withModelName("k-means")
-        .withMiningSchema(miningSchema)
-        .withComparisonMeasure(comparisonMeasure)
-        .withFunctionName(MiningFunctionType.CLUSTERING)
-        .withModelClass(ClusteringModel.ModelClass.CENTER_BASED)
-        .withNumberOfClusters(model.clusterCenters.length)
-
-      for (i <- 0 until clusterCenter.size) {
-        fields(i) = FieldName.create("field_" + i)
-        dataDictionary.withDataFields(new DataField(fields(i), OpType.CONTINUOUS, DataType.DOUBLE))
-        miningSchema
-          .withMiningFields(new MiningField(fields(i))
-          .withUsageType(FieldUsageType.ACTIVE))
-        clusteringModel.withClusteringFields(
-          new ClusteringField(fields(i)).withCompareFunction(CompareFunctionType.ABS_DIFF))
-      }
-
-      dataDictionary.withNumberOfFields(dataDictionary.getDataFields.size)
-
-      for (i <- 0 until model.clusterCenters.length) {
-        val cluster = new Cluster()
-          .withName("cluster_" + i)
-          .withArray(new org.dmg.pmml.Array()
-          .withType(Array.Type.REAL)
-          .withN(clusterCenter.size)
-          .withValue(model.clusterCenters(i).toArray.mkString(" ")))
-        // we don't have the size of the single cluster but only the centroids (withValue)
-        // .withSize(value)
-        clusteringModel.withClusters(cluster)
-      }
-
-      pmml.setDataDictionary(dataDictionary)
-      pmml.withModels(clusteringModel)
-    }
+//
+//    if (model.clusterCenters.length > 0) {
+//      val clusterCenter = model.clusterCenters(0)
+//      val fields = new SArray[FieldName](clusterCenter.size)
+//      val dataDictionary = new DataDictionary
+//      val miningSchema = new MiningSchema
+//      val comparisonMeasure = new ComparisonMeasure()
+//        .withKind(ComparisonMeasure.Kind.DISTANCE)
+//        .withMeasure(new SquaredEuclidean())
+//      val clusteringModel = new ClusteringModel()
+//        .withModelName("k-means")
+//        .withMiningSchema(miningSchema)
+//        .withComparisonMeasure(comparisonMeasure)
+//        .withFunctionName(MiningFunctionType.CLUSTERING)
+//        .withModelClass(ClusteringModel.ModelClass.CENTER_BASED)
+//        .withNumberOfClusters(model.clusterCenters.length)
+//
+//      for (i <- 0 until clusterCenter.size) {
+//        fields(i) = FieldName.create("field_" + i)
+//        dataDictionary.withDataFields(new DataField(fields(i), OpType.CONTINUOUS, DataType.DOUBLE))
+//        miningSchema
+//          .withMiningFields(new MiningField(fields(i))
+//          .withUsageType(FieldUsageType.ACTIVE))
+//        clusteringModel.withClusteringFields(
+//          new ClusteringField(fields(i)).withCompareFunction(CompareFunctionType.ABS_DIFF))
+//      }
+//
+//      dataDictionary.withNumberOfFields(dataDictionary.getDataFields.size)
+//
+//      for (i <- 0 until model.clusterCenters.length) {
+//        val cluster = new Cluster()
+//          .withName("cluster_" + i)
+//          .withArray(new org.dmg.pmml.Array()
+//          .withType(Array.Type.REAL)
+//          .withN(clusterCenter.size)
+//          .withValue(model.clusterCenters(i).toArray.mkString(" ")))
+//        // we don't have the size of the single cluster but only the centroids (withValue)
+//        // .withSize(value)
+//        clusteringModel.withClusters(cluster)
+//      }
+//
+//      pmml.setDataDictionary(dataDictionary)
+//      pmml.withModels(clusteringModel)
+//    }
   }
 }

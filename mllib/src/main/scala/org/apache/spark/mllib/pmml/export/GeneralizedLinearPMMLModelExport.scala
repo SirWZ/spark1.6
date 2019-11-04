@@ -38,38 +38,37 @@ private[mllib] class GeneralizedLinearPMMLModelExport(
    */
   private def populateGeneralizedLinearPMML(model: GeneralizedLinearModel): Unit = {
     pmml.getHeader.setDescription(description)
-
-    if (model.weights.size > 0) {
-      val fields = new SArray[FieldName](model.weights.size)
-      val dataDictionary = new DataDictionary
-      val miningSchema = new MiningSchema
-      val regressionTable = new RegressionTable(model.intercept)
-      val regressionModel = new RegressionModel()
-        .withFunctionName(MiningFunctionType.REGRESSION)
-        .withMiningSchema(miningSchema)
-        .withModelName(description)
-        .withRegressionTables(regressionTable)
-
-      for (i <- 0 until model.weights.size) {
-        fields(i) = FieldName.create("field_" + i)
-        dataDictionary.withDataFields(new DataField(fields(i), OpType.CONTINUOUS, DataType.DOUBLE))
-        miningSchema
-          .withMiningFields(new MiningField(fields(i))
-          .withUsageType(FieldUsageType.ACTIVE))
-        regressionTable.withNumericPredictors(new NumericPredictor(fields(i), model.weights(i)))
-      }
-
-      // for completeness add target field
-      val targetField = FieldName.create("target")
-      dataDictionary.withDataFields(new DataField(targetField, OpType.CONTINUOUS, DataType.DOUBLE))
-      miningSchema
-        .withMiningFields(new MiningField(targetField)
-        .withUsageType(FieldUsageType.TARGET))
-
-      dataDictionary.withNumberOfFields(dataDictionary.getDataFields.size)
-
-      pmml.setDataDictionary(dataDictionary)
-      pmml.withModels(regressionModel)
-    }
+//
+//    if (model.weights.size > 0) {
+//      val fields = new SArray[FieldName](model.weights.size)
+//      val dataDictionary = new DataDictionary
+//      val miningSchema = new MiningSchema
+//      val regressionTable = new RegressionTable(model.intercept)
+//      val regressionModel = new RegressionModel()
+//        .withFunctionName(MiningFunctionType.REGRESSION)
+//        .withMiningSchema(miningSchema)
+//        .withModelName(description)
+//        .withRegressionTables(regressionTable)
+//
+//      for (i <- 0 until model.weights.size) {
+//        fields(i) = FieldName.create("field_" + i)
+//        dataDictionary.withDataFields(new DataField(fields(i), OpType.CONTINUOUS, DataType.DOUBLE))
+//        miningSchema
+//          .withMiningFields(new MiningField(fields(i))
+//          .withUsageType(FieldUsageType.ACTIVE))
+//        regressionTable.withNumericPredictors(new NumericPredictor(fields(i), model.weights(i)))
+//      }
+//
+//      // for completeness add target field
+//      val targetField = FieldName.create("target")
+//      dataDictionary.withDataFields(new DataField(targetField, OpType.CONTINUOUS, DataType.DOUBLE))
+//      miningSchema
+//        .withMiningFields(new MiningField(targetField)
+//        .withUsageType(FieldUsageType.TARGET))
+//
+//      dataDictionary.withNumberOfFields(dataDictionary.getDataFields.size)
+//
+//      pmml.setDataDictionary(dataDictionary)
+//      pmml.withModels(regressionModel)
   }
 }
