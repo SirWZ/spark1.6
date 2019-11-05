@@ -26,7 +26,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-  <artifactId>spark-mllib_2.10</artifactId>
+    <artifactId>spark-mllib_2.10</artifactId>
     <properties>
         <sbt.project.name>mllib</sbt.project.name>
     </properties>
@@ -126,6 +126,25 @@
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-test-tags_${scala.binary.version}</artifactId>
         </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-compress</artifactId>
+            <version>1.19</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.xerial.snappy</groupId>
+            <artifactId>snappy-java</artifactId>
+            <version>1.1.7.3</version>
+        </dependency>
+
+
     </dependencies>
     <profiles>
         <profile>
