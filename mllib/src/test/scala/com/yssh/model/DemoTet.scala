@@ -1,5 +1,7 @@
 package com.yssh.model
 
+import java.io.{ByteArrayInputStream, ByteArrayOutputStream, ObjectInputStream, ObjectOutputStream}
+
 import jdk.nashorn.internal.ir.debug.ObjectSizeCalculator
 import org.apache.commons.compress.compressors.CompressorStreamFactory
 import org.apache.hadoop.conf.Configuration
@@ -7,6 +9,7 @@ import org.apache.hadoop.fs.{FileSystem, Path}
 import org.scalatest.{BeforeAndAfter, FlatSpec, Matchers}
 import org.scalatest.concurrent.ScaledTimeSpans
 import org.xerial.snappy.Snappy
+import redis.clients.jedis.Jedis
 
 class DemoTet extends FlatSpec with BeforeAndAfter with Matchers with ScaledTimeSpans {
 
@@ -26,6 +29,31 @@ class DemoTet extends FlatSpec with BeforeAndAfter with Matchers with ScaledTime
 
   }
 
+  "对象序列化测试" should "" in {
+
+
+    def deserialise[A](bytes: Array[Byte]): A = {
+      val ois = new ObjectInputStream(new ByteArrayInputStream(bytes))
+      val value = ois.readObject()
+      ois.close()
+      value.asInstanceOf[A]
+    }
+
+    def serialise(value: Any): Array[Byte] = {
+      val stream: ByteArrayOutputStream = new ByteArrayOutputStream()
+      val oos = new ObjectOutputStream(stream)
+      oos.writeObject(value)
+      oos.close()
+      stream.toByteArray
+    }
+
+    val value1: Array[Byte] = serialise("aaaa")
+    val value2: String = deserialise[String](value1)
+    println(value2)
+
+  }
+
+
   "下载算法模型到本地" should "" in {
 
     val configuration = new Configuration()
@@ -37,6 +65,17 @@ class DemoTet extends FlatSpec with BeforeAndAfter with Matchers with ScaledTime
     fileSystem.close();
 
   }
+
+  "Redis 测试" should "" in {
+
+    val jedis = new Jedis("10.101.127.190", 6379)
+    jedis.auth("123456")
+    jedis.select(2)
+
+
+
+  }
+
 
 }
 
